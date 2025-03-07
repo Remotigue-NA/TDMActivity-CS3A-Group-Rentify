@@ -5,6 +5,9 @@ class SalaryComputation:
     PAGIBIG_CONTRIBUTION = 100
 
     def __init__(self, gross_salary):
+        if not isinstance(gross_salary, (int, float)) or gross_salary <= 0:
+            raise ValueError("Gross salary must be a positive number.")
+
         self.gross_salary = gross_salary
         self.sss_deduction = self.compute_sss_contribution()
         self.philhealth_deduction = self.compute_philhealth_deduction()
@@ -33,20 +36,36 @@ class SalaryComputation:
         return self.gross_salary - self.total_deductions
 
     def display_salary_details(self):
-        print("Gross Salary:", self.gross_salary)
-        print("SSS Deduction:", self.sss_deduction)
-        print("PhilHealth Deduction:", self.philhealth_deduction)
-        print("Pag-IBIG Deduction:", self.pagibig_deduction)
-        print("Tax Deduction:", self.tax_deduction)
-        print("Total Deductions:", self.total_deductions)
-        print("Net Salary:", self.net_salary)
+        print("\nSalary Breakdown:")
+        print(f"Gross Salary: {self.gross_salary:.2f}")
+        print(f"SSS Deduction: {self.sss_deduction:.2f}")
+        print(f"PhilHealth Deduction: {self.philhealth_deduction:.2f}")
+        print(f"Pag-IBIG Deduction: {self.pagibig_deduction:.2f}")
+        print(f"Tax Deduction: {self.tax_deduction:.2f}")
+        print(f"Total Deductions: {self.total_deductions:.2f}")
+        print(f"Net Salary: {self.net_salary:.2f}")
 
 
 def main():
-    monthly_salary = float(input("Enter your monthly salary: "))
-    salary = SalaryComputation(monthly_salary)
-    salary.display_salary_details()
+    while True:
+        try:
+            monthly_salary = float(input("Enter your monthly salary: "))
+            if monthly_salary <= 0:
+                print("Error: Salary must be a positive number. Please try again.")
+                continue
+
+            salary = SalaryComputation(monthly_salary)
+            salary.display_salary_details()
+            break
+
+        except ValueError:
+            print("Invalid input! Please enter a valid numeric salary.")
+
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+            break
 
 
 if __name__ == "__main__":
     main()
+
