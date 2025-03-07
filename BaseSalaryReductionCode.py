@@ -1,44 +1,52 @@
-def compute_sss_contribution():
-    return 1200
-
-def compute_philhealth_deduction(gross_salary):
+class SalaryComputation:
     PHILHEALTH_RATE = 0.05
-    return (gross_salary * PHILHEALTH_RATE) / 2
+    FIXED_TAX = 1875
+    SSS_CONTRIBUTION = 1200
+    PAGIBIG_CONTRIBUTION = 100
 
-def compute_pagibig_contribution():
-    return 100
+    def __init__(self, gross_salary):
+        self.gross_salary = gross_salary
+        self.sss_deduction = self.compute_sss_contribution()
+        self.philhealth_deduction = self.compute_philhealth_deduction()
+        self.pagibig_deduction = self.compute_pagibig_contribution()
+        self.tax_deduction = self.compute_fixed_tax()
+        self.total_deductions = self.compute_total_deductions()
+        self.net_salary = self.compute_net_salary()
 
-def compute_fixed_tax():
-    return 1875  # Assuming fixed value for simplicity
+    def compute_sss_contribution(self):
+        return self.SSS_CONTRIBUTION
 
-def compute_total_deductions(gross_salary):
-    sss_deduction = compute_sss_contribution()
-    philhealth_deduction = compute_philhealth_deduction(gross_salary)
-    pagibig_deduction = compute_pagibig_contribution()
-    tax_deduction = compute_fixed_tax()
-    
-    total_deductions = sss_deduction + philhealth_deduction + pagibig_deduction + tax_deduction
-    return total_deductions, sss_deduction, philhealth_deduction, pagibig_deduction, tax_deduction
+    def compute_philhealth_deduction(self):
+        return (self.gross_salary * self.PHILHEALTH_RATE) / 2
 
-def compute_net_salary(gross_salary):
-    total_deductions, sss, philhealth, pagibig, tax = compute_total_deductions(gross_salary)
-    net_salary = gross_salary - total_deductions
-    return net_salary, total_deductions, sss, philhealth, pagibig, tax
+    def compute_pagibig_contribution(self):
+        return self.PAGIBIG_CONTRIBUTION
 
-def display_salary_details(gross_salary):
-    net_salary, total_deductions, sss, philhealth, pagibig, tax = compute_net_salary(gross_salary)
-    
-    print("Gross Salary:", gross_salary)
-    print("SSS Deduction:", sss)
-    print("PhilHealth Deduction:", philhealth)
-    print("Pag-IBIG Deduction:", pagibig)
-    print("Tax Deduction:", tax)
-    print("Total Deductions:", total_deductions)
-    print("Net Salary:", net_salary)
+    def compute_fixed_tax(self):
+        return self.FIXED_TAX
+
+    def compute_total_deductions(self):
+        return (self.sss_deduction + self.philhealth_deduction +
+                self.pagibig_deduction + self.tax_deduction)
+
+    def compute_net_salary(self):
+        return self.gross_salary - self.total_deductions
+
+    def display_salary_details(self):
+        print("Gross Salary:", self.gross_salary)
+        print("SSS Deduction:", self.sss_deduction)
+        print("PhilHealth Deduction:", self.philhealth_deduction)
+        print("Pag-IBIG Deduction:", self.pagibig_deduction)
+        print("Tax Deduction:", self.tax_deduction)
+        print("Total Deductions:", self.total_deductions)
+        print("Net Salary:", self.net_salary)
+
 
 def main():
     monthly_salary = float(input("Enter your monthly salary: "))
-    display_salary_details(monthly_salary)
+    salary = SalaryComputation(monthly_salary)
+    salary.display_salary_details()
+
 
 if __name__ == "__main__":
     main()
